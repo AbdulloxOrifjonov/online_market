@@ -1,24 +1,32 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import { useDebounce } from "use-debounce";
 
 const HomePage = () => {
+  const [keyword] = useDebounce("", 600);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProducts = async (offset = 0) => {
       try {
-        const response = await fetch("http://localhost:5000/products");
+        const response = await fetch(
+          `https://dummyjson.com/products//search?q=${keyword}&limit=16&skip=${offset}&select=title,price,discountPercentage,images,rating,tags,thumbnail&delay=1000`,
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
         const data = await response.json();
-        setProducts(data);
+        console.log(data);
+        setProducts(data.products);
       } catch (error) {
         console.error("Mahsulotlarni olishda xatolik:", error);
       }
     };
 
     fetchProducts();
+    // eslint-disable-next-line
   }, []);
 
   const paginatedProducts = () => {
@@ -42,7 +50,7 @@ const HomePage = () => {
           >
             <div className="overflow-hidden">
               <img
-                src={product.images[0]}
+                src={product.images}
                 alt={product.title}
                 className="w-full h-48 object-cover transform transition-transform duration-300 hover:translate-y-[-10px] hover:scale-105"
               />
