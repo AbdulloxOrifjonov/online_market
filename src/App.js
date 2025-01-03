@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import HomePage from "./pages/HomePage";
 import CategoryPage from "./pages/CategoryPage";
-import AboutCategory from "./pages/AboutCategory";
+import AboutCard from "./pages/AboutCard";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="category" element={<CategoryPage />} />
-          <Route path="about-category" element={<AboutCategory />} />
+          <Route path="product/:id" element={<AboutCard />} />
         </Route>
       </Routes>
     </Router>
