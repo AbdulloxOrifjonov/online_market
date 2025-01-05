@@ -1,9 +1,20 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isActive === true) {
+      navigate("/category");
+    } else {
+      navigate("/");
+    }
+  }, [isActive]);
 
   return (
     <div className="pl-10 pr-10 w-full flex items-center justify-between h-[70px] text-white bg-[#947f66]">

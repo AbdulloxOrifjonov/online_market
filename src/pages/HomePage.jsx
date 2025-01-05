@@ -7,7 +7,7 @@ import { MarketContext } from "../context/MarketProvider";
 const HomePage = () => {
   const { setContextProds, contextProds, setAboutProductss } = useContext(MarketContext);
 
-  const [searchInput, setSearchInput] = useState(""); 
+  const [searchInput, setSearchInput] = useState("");
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
@@ -17,13 +17,12 @@ const HomePage = () => {
   useEffect(() => {
     const fetchInitialProducts = async () => {
       try {
-        const response = await fetch(
-          `https://dummyjson.com/products?limit=1000&select=title,price,discountPercentage,images,rating,tags,thumbnail`,
-        );
+        const response = await fetch(`https://dummyjson.com/products?limit=100`);
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
         const data = await response.json();
+        console.log(data.products);
         setProducts(data.products);
         setContextProds(data.products);
       } catch (error) {
@@ -47,7 +46,11 @@ const HomePage = () => {
         throw new Error(`HTTP Error: ${response.status}`);
       }
       const data = await response.json();
-      setProducts(data.products);
+      if (data.products) {
+        setProducts(data.products);
+      } else {
+        return;
+      }
     } catch (error) {
       console.error("Qidiruvda xatolik:", error);
     }
@@ -75,7 +78,7 @@ const HomePage = () => {
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   return (
-    <div className="p-10 w-full bg-[#f7dfc3] pt-28">
+    <div className="p-10 w-full h-[100%] bg-[#f7dfc3] pt-28">
       <div className="text-right mb-10 mr-5 flex items-center justify-end gap-2">
         <input
           type="text"
@@ -93,29 +96,37 @@ const HomePage = () => {
       </div>
 
       <div className="flex flex-wrap gap-5 justify-center">
-        {paginatedProducts().map((product) => (
-          <div
-            key={product.id}
-            className="w-[23%] h-[370px] bg-[#b8a187] rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-[#9b866e]"
-            onClick={() => navigateToCard(product.id)}
-          >
-            <div className="overflow-hidden h-[80%]">
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="w-full h-[100%] object-cover transform transition-transform duration-300 hover:translate-y-[-10px] hover:scale-105"
-              />
-            </div>
+        <div className="flex flex-wrap gap-5 justify-center">
+          {products && products.length > 0 ? (
+            paginatedProducts().map((product) => (
+              <div
+                key={product.id}
+                className="w-[23%] h-[370px] bg-[#b8a187] rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-[#9b866e]"
+                onClick={() => navigateToCard(product.id)}
+              >
+                <div className="overflow-hidden h-[80%]">
+                  <img
+                    src={product.images[0]}
+                    alt={product.title}
+                    className="w-full h-[100%] object-cover transform transition-transform duration-300 hover:translate-y-[-10px] hover:scale-105"
+                  />
+                </div>
 
-            <div className="p-4 bg-[#8f7b64] h-[25%]">
-              <div className="flex items-center gap-2 w-full flex-wrap">
-                <h3 className="text-lg font-semibold text-white">{product.title}</h3>
-                <h4 className="text-xs text-white">{product.price} $</h4>
+                <div className="p-4 bg-[#8f7b64] h-[25%]">
+                  <div className="flex items-center gap-2 w-full flex-wrap">
+                    <h3 className="text-lg font-semibold text-white">{product.title}</h3>
+                    <h4 className="text-xs text-white">{product.price} $</h4>
+                  </div>
+                  <p className="text-sm text-gray-200 mt-2">{product.description}</p>
+                </div>
               </div>
-              <p className="text-sm text-gray-200 mt-2">{product.description}</p>
+            ))
+          ) : (
+            <div className="h-[257px] w-[100%] flex items-center justify-center">
+              <h1 className="text-6xl text-[#3b3b3b]">Loading . . .</h1>
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
 
       <div className="flex justify-center mt-8 gap-3">
