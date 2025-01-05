@@ -40,7 +40,7 @@ const HomePage = () => {
   const handleSearch = async () => {
     try {
       const response = await fetch(
-        `https://dummyjson.com/products/search?q=${searchInput}&limit=1000&select=title,price,discountPercentage,images,rating,tags,thumbnail`,
+        `https://dummyjson.com/products/search?q=${searchInput}&limit=100&select=title,price,discountPercentage,images,rating,tags,thumbnail`,
       );
       if (!response.ok) {
         throw new Error(`HTTP Error: ${response.status}`);
