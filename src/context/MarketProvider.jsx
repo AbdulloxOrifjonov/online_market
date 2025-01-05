@@ -7,6 +7,7 @@ export const MarketContext = createContext();
 const MarketProvider = ({ children }) => {
   const [aboutProducts, setAboutProductss] = useState([]);
   const [contextProds, setContextProds] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -25,6 +26,8 @@ const MarketProvider = ({ children }) => {
     <MarketContext.Provider
       value={{
         setContextProds,
+        setSelectedProduct,
+        selectedProduct,
         contextProds,
         aboutProducts,
         setAboutProductss,

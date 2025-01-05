@@ -5,8 +5,7 @@ import { MarketContext } from "../context/MarketProvider";
 import { useNavigate } from "react-router-dom";
 
 const AboutCard = () => {
-  const { aboutProducts } = useContext(MarketContext);
-  console.log(aboutProducts);
+  const { aboutProducts, setSelectedProduct } = useContext(MarketContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,9 +15,21 @@ const AboutCard = () => {
     // eslint-disable-next-line
   }, [aboutProducts]);
 
+  const handleAddToCart = () => {
+    if (aboutProducts) {
+      setSelectedProduct({
+        id: aboutProducts.id,
+        title: aboutProducts.title,
+        price: aboutProducts.price,
+        thumbnail: aboutProducts.thumbnail,
+      });
+      alert(`${aboutProducts.title} added to cart!`);
+    }
+  };
+
   return (
-    <div className="w-[100%] h-[100%] bg-[#f7dfc3] pt-9 pb-[33px]">
-      <div className="max-w-[400px] mx-auto bg-[#d4bea2] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-xl  ">
+    <div className="w-[100%] h-[571px] bg-[#f7dfc3] pt-[40px] pb-[40px]">
+      <div className="max-w-[400px] mx-auto bg-[#d4bea2] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-xl">
         <div className="overflow-hidden h-[300px]">
           <img
             src={aboutProducts?.thumbnail}
@@ -29,21 +40,16 @@ const AboutCard = () => {
 
         <div className="p-4">
           <h3 className="text-xl font-semibold text-gray-800">{aboutProducts.title}</h3>
-          <p className="text-sm text-gray-600 mt-1">Tags: {aboutProducts.tags.join(", ")}</p>
-          <p className="text-sm text-gray-600 mt-2">
-            Discount: {aboutProducts.discountPercentage}%
-          </p>
+          <p className="text-sm text-gray-600 mt-1">Price: ${aboutProducts.price}</p>
         </div>
 
-        <div className="p-4 border-t border-gray-200 bg-[#947f66]">
-          <div className="mt-4">
-            <p className="text-sm text-gray-800">
-              Price: <span className="font-bold">${aboutProducts.price}</span>
-            </p>
-            <p className="text-sm text-gray-800">
-              Rating: <span className="font-bold">{aboutProducts.rating}</span>
-            </p>
-          </div>
+        <div className="p-4 border-t flex items-center justify-between border-gray-200 bg-[#947f66]">
+          <button
+            onClick={handleAddToCart}
+            className="w-[105px] h-[40px] text-white rounded-lg text-sm bg-blue-700 hover:bg-blue-800"
+          >
+            Add To Cart
+          </button>
         </div>
       </div>
     </div>

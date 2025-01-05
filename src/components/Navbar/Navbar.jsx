@@ -1,20 +1,21 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import sale from "../../imgs/sale.svg";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isActive === true) {
-      navigate("/category");
-    } else {
-      navigate("/");
-    }
-  }, [isActive]);
+  // useEffect(() => {
+  //   if (isActive === true) {
+  //     navigate("/category");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [isActive]);
 
   return (
     <div className="pl-10 pr-10 w-full flex items-center justify-between h-[70px] text-white bg-[#947f66]">
@@ -24,7 +25,10 @@ const Navbar = () => {
           className={`p-[10px] w-[90px] text-center border-2 rounded-md cursor-pointer transition-all text-black duration-300 ${
             !isActive ? "bg-[#f7dfc3] border-white" : "bg-white  border-[#f7dfc3]"
           }`}
-          onClick={() => setIsActive(false)}
+          onClick={() => {
+            setIsActive(false);
+            navigate("/");
+          }}
         >
           <h3>Home</h3>
         </div>
@@ -33,9 +37,18 @@ const Navbar = () => {
           className={`p-[11px] text-black text-center border-2 rounded-md cursor-pointer transition-all duration-300 ${
             isActive ? "bg-[#f7dfc3]  border-white" : "bg-white  border-[#f7dfc3]"
           }`}
-          onClick={() => setIsActive(true)}
+          onClick={() => {
+            setIsActive(true);
+            navigate("/category");
+          }}
         >
           <h3>Categories</h3>
+        </div>
+
+        <div className="w-[40px] cursor-pointer">
+          <Link to="sale">
+          <img src={sale} alt="" className="w-full" />
+          </Link>
         </div>
       </div>
     </div>
